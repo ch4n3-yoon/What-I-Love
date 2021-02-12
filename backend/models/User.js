@@ -1,9 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-    const user = sequelize.define('user', {
-        no: {
-            type: DataTypes.INTEGER(10).UNSIGNED,
-            primaryKey: true,
-            autoIncrement: true,
+    const user = sequelize.define('User', {
+        username: {
+            type: DataTypes.TEXT('tiny'),
+            allowNull: false,
         },
         email: {
             type: DataTypes.TEXT('tiny'),
@@ -13,26 +12,23 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT('tiny'),
             allowNull: false,
         },
-        nickname: {
-            type: DataTypes.TEXT('tiny'),
-            allowNull: false,
-        },
         admin: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
     }, {
         charset: 'utf8',
-        collate: 'utf8mb4_bin',
+        collate: 'utf8_unicode_ci',
         timestamps: true,
+        tableName: 'user',
     });
 
-    user.associate = (models) => {
-        models.User.hasMany(models.Code, {
-            foreignKey: 'fk_userid',
-            onDelete: 'cascade',
-        });
-    };
+    // user.associate = (models) => {
+    //     models.User.hasMany(models.Code, {
+    //         foreignKey: 'fk_userid',
+    //         onDelete: 'cascade',
+    //     });
+    // };
 
     return user;
 };
