@@ -8,6 +8,7 @@ const logger = require('morgan');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const app = express();
 
 const {sequelize} = require('./models/index');
@@ -59,14 +60,14 @@ app.use(express.static('public'));
 // const rank = require('./router/rank.js');
 // const admin = require('./router/admin.js');
 
-const user = require('./router/user.js');
-app.use(`/user`, user);
 
-// app.use(`/`, index);
-//
-// app.use(`/rank`, rank);
-// app.use(`/${__admin_path__}`, admin);
-// app.use(`/challenge`, challenge);
+app.use(cors());
+
+const user = require('./router/user');
+const board = require('./router/board');
+app.use(`/user`, user);
+app.use('/board', board);
+
 
 app.use(async (req, res) => {
     res.status(404);
