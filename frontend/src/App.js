@@ -3,7 +3,7 @@ import './App.css';
 import React from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Login from './pages/Login';
-import ListBoard from './pages/ListBoard';
+import ListArticle from './pages/ListArticle';
 import Publish from "./pages/Publish";
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={Login}/>
-                <Route exact path="/article" component={ListBoard}/>
+                <Route exact path="/article" component={ListArticle}/>
                 <Route exact path="/article/publish" component={Publish}/>
                 {/*<Route exact path="/project" component={DockerCompose}/>*/}
                 {/*<Route path="/project/:projectId" component={ProjectView}/>*/}

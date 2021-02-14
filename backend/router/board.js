@@ -10,7 +10,7 @@ router.post('/publish', async (req, res) => {
     const location = req.body.location;
     const youtube = req.body.youtube;
 
-    const board = BoardAPI.create(title, content, location, youtube);
+    const board = await BoardAPI.create(title, content, location, youtube);
     console.log('[ DEBUG ] board :', board);
     console.log('[ INFO ] board has created !');
 
@@ -26,5 +26,22 @@ router.post('/publish', async (req, res) => {
         status: true,
     });
 });
+
+
+router.get('/latest', async (req, res) => {
+    const articles = await BoardAPI.get_latest();
+    if (!articles) {
+        res.json({
+            status: false,
+            message: 'Failed to load latest articles',
+        });
+    }
+
+    res.json({
+        status: true,
+        data: articles,
+    });
+});
+
 
 module.exports = router;

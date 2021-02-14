@@ -14,6 +14,12 @@ const api = {
     delete: async (username) => {
         User.delete();
     },
+    get_latest: async () => {
+        return Board.findAll({
+            order: [["id", "DESC"]],
+            limit: 20,
+        });
+    },
 };
 
 module.exports = api;
