@@ -1,19 +1,17 @@
-const user = require('./User');
 
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('users', {
-        id: {
-            type: DataTypes.INTEGER(10).UNSIGNED,
-            primaryKey: true,
-            autoIncrement: true,
+    return sequelize.define('Board', {
+        title: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+        content: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         location: {
             type: DataTypes.TEXT,
             allowNull: true,
-        },
-        title: {
-            type: DataTypes.TEXT,
-            allowNull: false,
         },
         youtubeUrl: {
             type: DataTypes.STRING,
@@ -21,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         charset: 'utf8',
-        collate: 'utf8mb4_bin',
+        collate: 'utf8_unicode_ci',
         timestamps: true,
+        tableName: 'board',
     });
 };

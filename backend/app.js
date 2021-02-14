@@ -65,9 +65,8 @@ app.use(cors());
 
 const user = require('./router/user');
 const board = require('./router/board');
-app.use(`/user`, user);
-app.use('/board', board);
-
+app.use('/user', user);
+app.use('/article', board);
 
 app.use(async (req, res) => {
     res.status(404);
