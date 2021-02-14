@@ -1,52 +1,28 @@
 import React, {useState} from 'react';
-import {useHistory} from 'react-router-dom';
-import {Container, Divider, Segment, Header, Grid} from 'semantic-ui-react';
+import {Container, Header, Form, Segment, Divider, Button} from 'semantic-ui-react';
+import http from '../utils/http';
+import 'semantic-ui-css/semantic.min.css';
 
-const DockerCompose = () => {
-    const dummy_data = [
-        {
-            id: 1,
-            name: 'test project',
-            description: 'for debug and test'
-        },
-        {
-            id: 2,
-            name: 'test project 2',
-            description: 'testtestsetset'
-        }
-    ];
+const CreateBoard = () => {
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [contentLocation, setContentLocation] = useState("");
+    const [youtube, setYoutube] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [projectId, setProjectId] = useState(0);
-    const history = useHistory();
-
-    const handleClick = (clickedProjectId) => {
-        setProjectId(clickedProjectId);
-        history.push(`/project/${projectId}`);
+    const publish = () => {
+        http.post('/')
     };
 
     return (
         <Container>
             <Divider hidden/>
             <Segment raised>
-                <Header as="h1">Your Docker Projects</Header>
-                <Divider hidden />
-                {(dummy_data.map((project) => (
-                    <Segment>
-                        <Grid celled="internally">
-                            <Grid.Row onClick={() => handleClick(project.id)}>
-                                <Grid.Column width={4}>
-                                    <Header>{project.name}</Header>
-                                </Grid.Column>
-                                <Grid.Column width={6}>
-                                    <div>{project.description}</div>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Segment>
-                )))}
+
+                <Button content='Publish' primary loading={isLoading}/>
             </Segment>
         </Container>
     )
-}
+};
 
-export default DockerCompose;
+export default CreateBoard;

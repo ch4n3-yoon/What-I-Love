@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import {Container, Header, Form, Segment, Divider, Button} from 'semantic-ui-react';
 import http from '../utils/http';
 import 'semantic-ui-css/semantic.min.css';
@@ -7,6 +8,8 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
+
+    const history = useHistory();
 
     const handleUsername = (event) => {
         setUsername(event.target.value);
@@ -24,7 +27,8 @@ const Login = () => {
             .then((resp) => {
                 console.log('[ DEBUG ] resp :', resp);
                 if (resp.data.status) {
-                    // sign-in success !
+                    console.log('[ INFO ] Success to sign in. welcome !');
+                    history.push('/articles');
                 } else {
                     console.log('[ INFO ] Failed to sign in');
                 }
