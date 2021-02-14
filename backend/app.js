@@ -13,7 +13,7 @@ const app = express();
 
 const {sequelize} = require('./models/index');
 const driver = () => {
-    sequelize.sync()
+    sequelize.sync({alter: true})
         .then(() => {
             console.log('[ DEBUG ] sequelize synchronizing ...');
         })
