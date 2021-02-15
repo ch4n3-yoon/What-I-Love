@@ -1,22 +1,30 @@
+const { Board } = require('../models');
+
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('users', {
-        id: {
-            type: DataTypes.INTEGER(10).UNSIGNED,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        article: {
-
-        },
+    const Attachment = sequelize.define('Attachment', {
         filename: {
-
+            type: DataTypes.TEXT,
+            allowNull: false,
         },
         path: {
-
+            type: DataTypes.TEXT,
+            allowNull: false,
         },
     }, {
         charset: 'utf8',
-        collate: 'utf8mb4_bin',
+        collate: 'utf8_unicode_ci',
         timestamps: true,
+        tableName: 'attachment',
     });
+
+    Attachment.associate = (models) => {
+        Attachment.belongsTo(models.Board, {
+            onDelete: 'CASCADE',
+            foreignKey: {
+                allowNull: true,
+            }
+        });
+    };
+
+    return Attachment;
 };

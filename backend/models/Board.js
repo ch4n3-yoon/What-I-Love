@@ -1,6 +1,5 @@
-
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('Board', {
+    const Board = sequelize.define('Board', {
         title: {
             type: DataTypes.TEXT,
             allowNull: false,
@@ -23,4 +22,15 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: true,
         tableName: 'board',
     });
+
+    Board.associate = (models) => {
+        Board.hasMany(models.Attachment, {
+            foreignKey: {
+                // foreignKey: 'boardId',
+                onDelete: 'CASCADE',
+            },
+        });
+    };
+
+    return Board;
 };
