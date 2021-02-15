@@ -9,13 +9,14 @@ const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const consoleAPI = require('./lib/console');
 const app = express();
 
 const {sequelize} = require('./models/index');
 const driver = () => {
     sequelize.sync({alter: true})
         .then(() => {
-            console.log('[ DEBUG ] sequelize synchronizing ...');
+            consoleAPI.success('INFO', 'sequelize synchronized !');
         })
         .catch((error) => {
             console.log(`[ ERROR ] failed to synchronize sequelize`);
