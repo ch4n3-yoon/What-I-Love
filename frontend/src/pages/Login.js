@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {Container, Header, Form, Segment, Divider, Button} from 'semantic-ui-react';
+import {Container, Header, Form, Segment, Divider, Button, Transition, Message, List, Grid} from 'semantic-ui-react';
 import http from '../utils/http';
 import 'semantic-ui-css/semantic.min.css';
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(false);
+    const [error, setError] = useState({});
 
     const history = useHistory();
 
@@ -31,27 +31,34 @@ const Login = () => {
                     history.push('/articles');
                 } else {
                     console.log('[ INFO ] Failed to sign in');
+                    setError({
+                        status: true,
+                        message: 'We cannot find such user. Try again 😥',
+                    })
                 }
             })
             .catch((error) => {
                 console.log(`[ ERROR ] error : ${error}`);
-                setError(true);
+                setError({
+                    status: true,
+                    message: error,
+                });
             });
-    }
 
-    if (error) {
-        return (
-            <div>
-                error !
-            </div>
-        )
-    }
+        setTimeout(() => {
+            setError(false);
+        }, 2000);
+    };
+
+    const handleSignUp = () => {
+        history.push('/sign-up');
+    };
 
     return (
         <Container>
             <Divider hidden/>
             <Segment raised>
-                <Header as="h2" color="purple">
+                <Header as="h2" color="violet">
                     Login
                 </Header>
                 <Form onSubmit={handleSubmit}>
@@ -67,9 +74,33 @@ const Login = () => {
                         placeholder='Password'
                         onChange={handlePassword}
                     />
-                    <Button>Sign in</Button>
                 </Form>
+                <Divider hidden/>
+                <Button
+                    color='violet'
+                    content='sign in'
+                    onClick={handleSubmit}
+                />
+                <Button
+                    color='olive'
+                    content='sign up'
+                    onClick={handleSignUp}
+                />
             </Segment>
+            <Transition.Group
+                duration={200}
+                as={List}
+                verticalAlign='middle'
+            >
+                {error.status && (
+                    <Message
+                        key={1}
+                        negative
+                        header='Error !'
+                        content={error.message}
+                    />
+                )}
+            </Transition.Group>
         </Container>
     );
 };
