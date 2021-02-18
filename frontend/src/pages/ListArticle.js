@@ -34,14 +34,22 @@ const ListArticle = () => {
             <Divider hidden/>
             <Segment raised loading={isLoading}>
                 <Header as='h2' content='✋ My Memorials'/>
-                {(articles.map(article => (
-                    <Segment>
-                        <Header>{article.title}</Header>
-                    </Segment>
-                )))}
+                <Segment.Group>
+                    {(articles.map(article => (
+                        <Segment>
+                            <Header>{article.title}</Header>
+                        </Segment>
+                    )))}
+                </Segment.Group>
+                <Button
+                    compact
+                    color='violet'
+                    onClick={() => {history.push('/article/publish')}}
+                    content='Publish'
+                />
             </Segment>
         </Container>
-    )
+    );
 };
 
 export default ListArticle;

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Container, Header, Form, Segment, Divider, Button} from 'semantic-ui-react';
+import {useHistory} from 'react-router-dom';
+import {Container, Header, Form, Segment, Divider, Button, Transition, Message, List} from 'semantic-ui-react';
 import http from '../utils/http';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -9,6 +10,11 @@ const Publish = () => {
     const [contentLocation, setContentLocation] = useState("");
     const [youtube, setYoutube] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [isPublishDisabled, setIsPublishDisabled] = useState(false);
+    const [selectedFile, setSelectedFile] = useState({});
+
+    const history = useHistory();
 
     const handleTitle = (event) => {
         setTitle(event.target.value);
@@ -28,6 +34,7 @@ const Publish = () => {
 
     const handleSubmit = () => {
         setIsLoading(true);
+
         http.post('/article/publish', {
             title: title,
             content: content,
@@ -40,11 +47,40 @@ const Publish = () => {
             }
 
             setIsLoading(false);
+            setIsSuccess(true);
+            setIsPublishDisabled(true);
+
+            setTimeout(() => {
+                setIsSuccess(false);
+                history.push('/article');
+            }, 2000);
         }).catch(error => {
             console.log(`[ ERROR ] ${error}`);
 
             setIsLoading(false);
         });
+    };
+
+    const handleFileUpload = (event) => {
+        const {target: {files: [file]}} = event;
+        console.log('[ DEBUG ] file :', file);
+
+        if (file) {
+            setSelectedFile(file);
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        http.post('/file/upload/1', formData)
+            .then(response => {
+                console.log('[ DEBUG ] upload response :', response);
+            })
+            .catch(error => {
+                console.log('[ ERROR ]', error);
+            });
+
+        event.target.value = null;
+        console.log('[ DEBUG ] selectedFile :' ,selectedFile);
     };
 
     return (
@@ -76,11 +112,51 @@ const Publish = () => {
                         placeholder='http://youtube.com/'
                         onChange={handleYoutube}
                     />
-                    <Divider hidden />
-                    <Button content='Publish' primary loading={isLoading}/>
-                </Form>
 
+                    <Transition.Group
+                        duration={200}
+                        as={List}
+                        verticalAlign='middle'
+                    >
+                        <Form.Input
+                            type='file'
+                            label='Related Files'
+                            onChange={handleFileUpload}
+                        />
+                    </Transition.Group>
+
+                    <Divider hidden/>
+                    <Button
+                        primary
+                        compact
+                        disabled={isPublishDisabled}
+                        content='Publish'
+                        loading={isLoading}
+                    />
+                    <Button
+                        secondary
+                        compact
+                        content='List'
+                        onClick={() => {
+                            history.push('/article')
+                        }}
+                    />
+                </Form>
             </Segment>
+            <Transition.Group
+                duration={200}
+                as={List}
+                verticalAlign='middle'
+            >
+                {isSuccess && (
+                    <Message
+                        key={1}
+                        positive
+                        header='Success !'
+                        content='Successfully Published 🌭'
+                    />
+                )}
+            </Transition.Group>
         </Container>
     )
 };
