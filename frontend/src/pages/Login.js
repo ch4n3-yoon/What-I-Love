@@ -28,7 +28,7 @@ const Login = () => {
                 console.log('[ DEBUG ] resp :', resp);
                 if (resp.data.status) {
                     console.log('[ INFO ] Success to sign in. welcome !');
-                    history.push('/articles');
+                    history.push('/article');
                 } else {
                     console.log('[ INFO ] Failed to sign in');
                     setError({
