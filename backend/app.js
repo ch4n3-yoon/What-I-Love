@@ -52,22 +52,18 @@ app.use(session({
 app.disable('x-powered-by');
 
 app.use(fileUpload());
-app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/upload', express.static(__dirname + '/upload'));
 app.use(express.static('public'));
-
-// const index = require('./router/index.js');
-// const user = require('./router/user.js');
-// const challenge = require('./router/challenge.js');
-// const rank = require('./router/rank.js');
-// const admin = require('./router/admin.js');
-
 
 app.use(cors());
 
 const user = require('./router/user');
 const board = require('./router/board');
+const attachment = require('./router/attachment');
+
 app.use('/user', user);
 app.use('/article', board);
+app.use('/file', attachment);
 
 app.use(async (req, res) => {
     res.status(404);

@@ -1,2 +1,4 @@
 node_modules/
+upload/
 log/app.log
+config/config.json

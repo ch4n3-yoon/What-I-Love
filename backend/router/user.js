@@ -4,7 +4,7 @@ const cors = require('cors');
 const UserAPI = require('../api/user');
 
 
-router.post('/create', cors(), async (req, res) => {
+router.post('/sign-up', cors(), async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
@@ -24,7 +24,7 @@ router.post('/create', cors(), async (req, res) => {
 });
 
 
-router.post('/sign-in', cors(), async (req, res) => {
+router.post('/sign-in', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
