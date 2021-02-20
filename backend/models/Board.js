@@ -25,10 +25,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Board.associate = (models) => {
         Board.hasMany(models.Attachment, {
-            foreignKey: {
-                // foreignKey: 'boardId',
-                onDelete: 'CASCADE',
-            },
+            foreignKey: 'board_id',
+            onDelete: 'CASCADE',
         });
     };
 

@@ -10,6 +10,13 @@ const api = {
             board_id: board_id,
         });
     },
+    get_files_by_boardId: async (board_id) => {
+        return Attachment.findAll({
+            where: {
+                board_id: board_id,
+            }
+        });
+    },
 };
 
 module.exports = api;

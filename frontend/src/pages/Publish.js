@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {Container, Header, Form, Segment, Divider, Button, Transition, Message, List} from 'semantic-ui-react';
+import {Container, Header, Form, Segment, Divider, Button, Transition, Message, List, Menu} from 'semantic-ui-react';
 import http from '../utils/http';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -13,6 +13,7 @@ const Publish = () => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [isPublishDisabled, setIsPublishDisabled] = useState(false);
     const [selectedFile, setSelectedFile] = useState({});
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const history = useHistory();
 
@@ -73,6 +74,9 @@ const Publish = () => {
         formData.append('file', file);
         http.post('/file/upload/1', formData)
             .then(response => {
+                const {data: {data: file}} = response;
+                setUploadedFiles([...uploadedFiles, file]);
+
                 console.log('[ DEBUG ] upload response :', response);
             })
             .catch(error => {
@@ -80,7 +84,6 @@ const Publish = () => {
             });
 
         event.target.value = null;
-        console.log('[ DEBUG ] selectedFile :' ,selectedFile);
     };
 
     return (
@@ -143,6 +146,32 @@ const Publish = () => {
                     />
                 </Form>
             </Segment>
+
+            {uploadedFiles.length !== 0 && (
+                <Segment raised>
+                    <Header
+                        as='h4'
+                        content='Uploaded Files'
+                    />
+                    <Menu vertical>
+                        <Transition.Group
+                            duration={200}
+                            verticalAlign='middle'
+                        >
+                            {uploadedFiles.map(file => (
+                                <Menu.Item
+                                    onClick={() => {
+                                        alert(file.filename)
+                                    }}
+                                >
+                                    <p>{file.filename}</p>
+                                </Menu.Item>
+                            ))}
+                        </Transition.Group>
+                    </Menu>
+                </Segment>
+            )}
+
             <Transition.Group
                 duration={200}
                 as={List}
