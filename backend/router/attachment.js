@@ -7,10 +7,31 @@ const AttachmentAPI = require('../api/attachment');
 const cryptoAPI = require('../lib/crypto');
 const consoleAPI = require('../lib/console');
 const responseAPI = require('../lib/response');
+const securityAPI = require('../lib/security');
 
 
-router.get('/:board_id', async (req, res) => {
+router.get('/:attachment_id', async (req, res) => {
+    const {params: {attachment_id}} = req;
 
+    const attachment = await AttachmentAPI.get_file_by_id(attachment_id);
+    if (!attachment) {
+        consoleAPI.fail('ERROR', `Cannot find the attachment (id : ${attachment_id})`);
+        return res.json(responseAPI.fail(`Cannot find the attachment (id : ${attachment_id})`));
+    }
+
+    const filename = securityAPI.only_alphanumberic(attachment.filename);
+    const extension = filename.split('.').pop().toLowerCase();
+
+    res.contentType(`image/${extension}`);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+    try {
+        const content = await fs.readFileSync(attachment.path);
+        res.end(content);
+    } catch (error) {
+        consoleAPI.fail('ERROR', error);
+        return res.json(responseAPI.fail('Cannot read attachment file.'));
+    }
 });
 
 

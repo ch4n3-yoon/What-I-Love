@@ -10,6 +10,11 @@ const api = {
             board_id: board_id,
         });
     },
+    get_file_by_id: async (attachment_id) => {
+        return Attachment.findOne({
+            where: {id: attachment_id},
+        });
+    },
     get_files_by_boardId: async (board_id) => {
         return Attachment.findAll({
             where: {
